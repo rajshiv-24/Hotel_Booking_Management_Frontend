@@ -6,8 +6,9 @@ import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class BookingService {
-  private userApi = `${environment.apiUrl}/api/...`;
-private adminApi = `${environment.apiUrl}/api/...`;
+  private userApi = `${environment.apiUrl}/api/user/bookings`;
+  private adminApi = `${environment.apiUrl}/api/admin/bookings`;
+
   constructor(private http: HttpClient) {}
 
   createBooking(data: any): Observable<Booking>       { return this.http.post<Booking>(this.userApi, data); }
