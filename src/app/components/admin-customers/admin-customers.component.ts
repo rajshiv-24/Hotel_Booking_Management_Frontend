@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({ selector: 'app-admin-customers', templateUrl: './admin-customers.component.html' })
 export class AdminCustomersComponent implements OnInit {
@@ -16,7 +17,7 @@ export class AdminCustomersComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.http.get<any[]>('http://localhost:8080/api/admin/customers').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/api/admin/customers`).subscribe({
       next:  (d) => { this.customers = d; this.loading = false; },
       error: ()  => { this.errorMsg = 'Failed to load customers.'; this.loading = false; }
     });
@@ -34,7 +35,7 @@ export class AdminCustomersComponent implements OnInit {
 
   delete(id: number): void {
     if (!confirm('Delete this customer? This cannot be undone.')) return;
-    this.http.delete(`http://localhost:8080/api/admin/customers/${id}`).subscribe({
+    this.http.delete(`${environment.apiUrl}/api/admin/customers/${id}`).subscribe({
       next: () => {
         this.successMsg = '✅ Customer deleted successfully.';
         this.load();

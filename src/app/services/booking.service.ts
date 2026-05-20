@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Booking } from '../models/models';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class BookingService {
-  private userApi  = 'http://localhost:8080/api/user/bookings';
-  private adminApi = 'http://localhost:8080/api/admin/bookings';
+  private userApi = `${environment.apiUrl}/api/...`;
+private adminApi = `${environment.apiUrl}/api/...`;
   constructor(private http: HttpClient) {}
 
   createBooking(data: any): Observable<Booking>       { return this.http.post<Booking>(this.userApi, data); }

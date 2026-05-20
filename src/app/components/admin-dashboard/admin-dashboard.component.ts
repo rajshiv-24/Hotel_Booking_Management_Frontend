@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BookingService } from '../../services/booking.service';
 import { RoomService } from '../../services/room.service';
 import { Booking } from '../../models/models';
+import { environment } from 'src/environments/environment';
 
 @Component({ selector: 'app-admin-dashboard', templateUrl: './admin-dashboard.component.html' })
 export class AdminDashboardComponent implements OnInit {
@@ -25,7 +26,7 @@ export class AdminDashboardComponent implements OnInit {
       this.totalRevenue      = bookings.filter(b => b.status === 'CONFIRMED').reduce((s, b) => s + (b.totalAmount || 0), 0);
       this.recentBookings    = bookings.slice(0, 5);
     });
-    this.http.get<any[]>('http://localhost:8080/api/admin/customers').subscribe(c => this.totalCustomers = c.length);
+    this.http.get<any[]>(`${environment.apiUrl}/api/admin/customers`).subscribe(c => this.totalCustomers = c.length);
   }
 
   statusClass(s: string): string {
