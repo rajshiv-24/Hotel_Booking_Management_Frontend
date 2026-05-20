@@ -1,0 +1,101 @@
+<div class="container-fluid py-4 px-4">
+
+  <div class="mb-4">
+    <h2 class="page-title mb-1">👤 All Customers</h2>
+    <p class="text-muted">View and manage registered users</p>
+  </div>
+
+  <div *ngIf="successMsg" class="alert alert-success d-flex align-items-center gap-2">
+    <i class="bi bi-check-circle-fill"></i> {{ successMsg }}
+  </div>
+  <div *ngIf="errorMsg" class="alert alert-danger d-flex align-items-center gap-2">
+    <i class="bi bi-exclamation-triangle-fill"></i> {{ errorMsg }}
+    <button class="btn-close ms-auto" (click)="errorMsg=''"></button>
+  </div>
+
+  <!-- Search bar -->
+  <div class="hotel-card card p-3 mb-4">
+    <div class="input-group">
+      <span class="input-group-text bg-light border-end-0">
+        <i class="bi bi-search text-muted"></i>
+      </span>
+      <input type="text" class="form-control border-start-0"
+             placeholder="Search by name, email or phone..."
+             [(ngModel)]="searchTerm">
+      <button class="btn btn-outline-secondary" *ngIf="searchTerm"
+              (click)="searchTerm=''">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary"></div>
+    <p class="text-muted mt-2">Loading customers...</p>
+  </div>
+
+  <!-- Table -->
+  <div *ngIf="!loading" class="hotel-card card">
+    <div class="card-header py-3"
+         style="background:linear-gradient(135deg,#1a1a2e,#16213e); color:white;">
+      <span class="fw-bold">
+        <i class="bi bi-people me-2"></i>
+        Registered Customers ({{ filtered.length }})
+      </span>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 admin-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Role</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of filtered; let i = index">
+            <td class="text-muted">{{ i + 1 }}</td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div class="rounded-circle text-white d-flex align-items-center justify-content-center fw-bold"
+                     style="width:36px; height:36px; min-width:36px;
+                            background:linear-gradient(135deg,#667eea,#764ba2);
+                            font-size:0.85rem;">
+                  {{ avatarLetter(c.fullName) }}
+                </div>
+                <strong>{{ c.fullName }}</strong>
+              </div>
+            </td>
+            <td>{{ c.email }}</td>
+            <td>{{ c.phone }}</td>
+            <td>
+              <span class="badge"
+                    [class.bg-warning]="c.role === 'ADMIN'"
+                    [class.text-dark]="c.role === 'ADMIN'"
+                    [class.bg-success]="c.role === 'USER'">
+                {{ c.role }}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-outline-danger" (click)="delete(c.id)"
+                      title="Delete customer">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="filtered.length === 0">
+            <td colspan="6" class="text-center text-muted py-5">
+              <div style="font-size:2.5rem;" class="mb-2">👤</div>
+              <h6>No customers found.</h6>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

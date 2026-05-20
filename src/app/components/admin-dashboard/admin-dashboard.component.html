@@ -1,0 +1,107 @@
+<div class="container-fluid py-4 px-4">
+
+  <div class="mb-4">
+    <h2 class="page-title mb-1">🛡️ Admin Dashboard</h2>
+    <p class="text-muted">Hotel overview and quick stats</p>
+  </div>
+
+  <!-- Stat cards -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-3 col-sm-6">
+      <div class="stat-card stat-purple">
+        <div style="font-size:2rem;" class="mb-2">🛏️</div>
+        <h2 class="fw-bold mb-1">{{ totalRooms }}</h2>
+        <p class="opacity-75 mb-2">Total Rooms</p>
+        <small class="opacity-60">{{ availableRooms }} available</small><br>
+        <a routerLink="/admin/rooms" class="btn btn-light btn-sm mt-2 rounded-pill px-3">Manage</a>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="stat-card stat-pink">
+        <div style="font-size:2rem;" class="mb-2">📋</div>
+        <h2 class="fw-bold mb-1">{{ totalBookings }}</h2>
+        <p class="opacity-75 mb-2">Total Bookings</p>
+        <small class="opacity-60">{{ confirmedBookings }} confirmed</small><br>
+        <a routerLink="/admin/bookings" class="btn btn-light btn-sm mt-2 rounded-pill px-3">View All</a>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="stat-card stat-blue">
+        <div style="font-size:2rem;" class="mb-2">👤</div>
+        <h2 class="fw-bold mb-1">{{ totalCustomers }}</h2>
+        <p class="opacity-75 mb-2">Customers</p>
+        <small class="opacity-60">Registered users</small><br>
+        <a routerLink="/admin/customers" class="btn btn-light btn-sm mt-2 rounded-pill px-3">View All</a>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="stat-card stat-green">
+        <div style="font-size:2rem;" class="mb-2">💰</div>
+        <h2 class="fw-bold mb-1">₹{{ totalRevenue | number }}</h2>
+        <p class="opacity-75 mb-2">Total Revenue</p>
+        <small class="opacity-60">Confirmed bookings</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress bars -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-4">
+      <div class="hotel-card card p-4 text-center">
+        <div class="text-success fw-bold" style="font-size:2rem;">{{ confirmedBookings }}</div>
+        <div class="text-muted mb-2">Active Bookings</div>
+        <div class="progress" style="height:6px;">
+          <div class="progress-bar bg-success" [style.width]="pct(confirmedBookings, totalBookings)"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="hotel-card card p-4 text-center">
+        <div class="text-danger fw-bold" style="font-size:2rem;">{{ cancelledBookings }}</div>
+        <div class="text-muted mb-2">Cancelled Bookings</div>
+        <div class="progress" style="height:6px;">
+          <div class="progress-bar bg-danger" [style.width]="pct(cancelledBookings, totalBookings)"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="hotel-card card p-4 text-center">
+        <div class="text-primary fw-bold" style="font-size:2rem;">{{ availableRooms }}</div>
+        <div class="text-muted mb-2">Available Rooms</div>
+        <div class="progress" style="height:6px;">
+          <div class="progress-bar bg-primary" [style.width]="pct(availableRooms, totalRooms)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Bookings -->
+  <div class="hotel-card card">
+    <div class="card-header d-flex justify-content-between align-items-center py-3"
+         style="background:linear-gradient(135deg,#1a1a2e,#16213e);color:white;">
+      <span class="fw-bold"><i class="bi bi-clock-history me-2"></i>Recent Bookings</span>
+      <a routerLink="/admin/bookings" class="btn btn-outline-light btn-sm">View All</a>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 admin-table">
+        <thead><tr>
+          <th>Room</th><th>Customer</th><th>Check-In</th><th>Check-Out</th><th>Amount</th><th>Status</th>
+        </tr></thead>
+        <tbody>
+          <tr *ngFor="let b of recentBookings">
+            <td><strong>{{ b.room?.roomNumber }}</strong> <span class="text-muted small">({{ b.room?.roomType }})</span></td>
+            <td>{{ b.user?.fullName }}</td>
+            <td>{{ b.checkInDate }}</td>
+            <td>{{ b.checkOutDate }}</td>
+            <td><strong>₹{{ b.totalAmount }}</strong></td>
+            <td><span class="badge" [class]="statusClass(b.status!)">{{ b.status }}</span></td>
+          </tr>
+          <tr *ngIf="recentBookings.length===0">
+            <td colspan="6" class="text-center text-muted py-4">No bookings yet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

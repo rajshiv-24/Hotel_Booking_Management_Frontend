@@ -1,0 +1,49 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background-color: #f0f2f5; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+.auth-bg {
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.auth-card { width: 100%; max-width: 430px; border-radius: 20px !important; overflow: hidden; border: none !important; box-shadow: 0 20px 60px rgba(0,0,0,0.5) !important; }
+.auth-header { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 2rem; text-align: center; color: white; }
+
+.main-navbar { background: linear-gradient(135deg, #1a1a2e, #16213e) !important; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+.main-navbar .navbar-brand { font-size: 1.4rem; font-weight: 700; color: white !important; }
+.main-navbar .nav-link { color: rgba(255,255,255,0.78) !important; font-weight: 500; padding: 0.45rem 0.9rem !important; border-radius: 8px; transition: all 0.2s; }
+.main-navbar .nav-link:hover, .main-navbar .nav-link.active { color: #ffc107 !important; background: rgba(255,193,7,0.1); }
+
+.hotel-card { border: none !important; border-radius: 16px !important; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.hotel-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.15) !important; }
+
+.room-banner-single { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+.room-banner-double { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+.room-banner-suite  { background: linear-gradient(135deg, #f093fb, #f5576c); }
+
+.stat-card { border: none !important; border-radius: 16px !important; color: white; padding: 1.5rem; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important; }
+.stat-purple { background: linear-gradient(135deg, #667eea, #764ba2); }
+.stat-pink   { background: linear-gradient(135deg, #f093fb, #f5576c); }
+.stat-blue   { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+.stat-green  { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+
+.admin-table thead tr { background: linear-gradient(135deg, #1a1a2e, #16213e); color: white; }
+.admin-table tbody tr:hover { background-color: #f8f9ff; }
+
+.btn-hotel { background: linear-gradient(135deg, #667eea, #764ba2); color: white !important; border: none; border-radius: 10px; font-weight: 600; transition: opacity 0.2s; }
+.btn-hotel:hover { opacity: 0.88; }
+.btn-gold { background: linear-gradient(135deg, #f7971e, #ffd200); color: #1a1a2e !important; border: none; border-radius: 10px; font-weight: 700; }
+.btn-gold:hover { opacity: 0.9; }
+
+.form-control:focus, .form-select:focus { border-color: #667eea; box-shadow: 0 0 0 0.2rem rgba(102,126,234,0.25); }
+
+.badge { border-radius: 50px !important; padding: 0.42em 0.85em !important; }
+
+.hero-bg { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 55%, #0f3460 100%); min-height: 91vh; display: flex; align-items: center; }
+
+.page-title { font-size: 1.75rem; font-weight: 700; color: #1a1a2e; }
+
+.alert { border-radius: 12px !important; border: none !important; }

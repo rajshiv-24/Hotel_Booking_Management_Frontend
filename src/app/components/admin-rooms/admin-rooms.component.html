@@ -1,0 +1,126 @@
+<div class="container-fluid py-4 px-4">
+
+  <div class="mb-4">
+    <h2 class="page-title mb-1">🛏️ Manage Rooms</h2>
+    <p class="text-muted">Add, edit or remove hotel rooms</p>
+  </div>
+
+  <div *ngIf="successMsg" class="alert alert-success">{{ successMsg }}</div>
+  <div *ngIf="errorMsg" class="alert alert-danger">
+    {{ errorMsg }} <button class="btn-close float-end" (click)="errorMsg=''"></button>
+  </div>
+
+  <div class="row g-4">
+
+    <div class="col-md-4" id="roomForm">
+      <div class="hotel-card card">
+        <div class="card-header text-white fw-bold py-3"
+             style="background:linear-gradient(135deg,#1a1a2e,#16213e);">
+          <i class="bi bi-plus-square me-2"></i>{{ editingRoom ? 'Edit Room' : 'Add New Room' }}
+        </div>
+        <div class="card-body p-4">
+          <form [formGroup]="form" (ngSubmit)="submit()">
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Room Number <span class="text-danger">*</span></label>
+              <input class="form-control" formControlName="roomNumber" placeholder="e.g. 101"
+                     [class.is-invalid]="f['roomNumber'].touched && f['roomNumber'].invalid">
+              <div class="invalid-feedback">Required.</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Room Type <span class="text-danger">*</span></label>
+              <select class="form-select" formControlName="roomType"
+                      [class.is-invalid]="f['roomType'].touched && f['roomType'].invalid">
+                <option value="">-- Select --</option>
+                <option value="SINGLE">Single</option>
+                <option value="DOUBLE">Double</option>
+                <option value="SUITE">Suite</option>
+              </select>
+              <div class="invalid-feedback">Required.</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Price/Night (₹) <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text">₹</span>
+                <input type="number" class="form-control" formControlName="pricePerNight" placeholder="2500"
+                       [class.is-invalid]="f['pricePerNight'].touched && f['pricePerNight'].invalid">
+              </div>
+              <div class="text-danger small mt-1"
+                   *ngIf="f['pricePerNight'].touched && f['pricePerNight'].invalid">Must be > 0.</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Description</label>
+              <textarea class="form-control" rows="2" formControlName="description"
+                        placeholder="AC, WiFi, Sea view..."></textarea>
+            </div>
+
+            <div class="mb-4 form-check">
+              <input type="checkbox" class="form-check-input" formControlName="available" id="avail">
+              <label class="form-check-label" for="avail">Available for booking</label>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-hotel flex-fill">
+                {{ editingRoom ? '💾 Update' : '✅ Create Room' }}
+              </button>
+              <button *ngIf="editingRoom" type="button" class="btn btn-outline-secondary" (click)="cancelEdit()">
+                Cancel
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="hotel-card card">
+        <div class="card-header py-3"
+             style="background:linear-gradient(135deg,#1a1a2e,#16213e);color:white;">
+          <span class="fw-bold"><i class="bi bi-list-ul me-2"></i>All Rooms ({{ rooms.length }})</span>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover mb-0 admin-table">
+            <thead><tr>
+              <th>#</th><th>Room</th><th>Type</th><th>Price</th><th>Description</th><th>Status</th><th>Actions</th>
+            </tr></thead>
+            <tbody>
+              <tr *ngFor="let r of rooms; let i=index">
+                <td class="text-muted">{{ i+1 }}</td>
+                <td><strong>{{ r.roomNumber }}</strong></td>
+                <td>
+                  <span class="badge"
+                        [class.bg-success]="r.roomType==='SINGLE'"
+                        [class.bg-info]="r.roomType==='DOUBLE'"
+                        [class.bg-danger]="r.roomType==='SUITE'">
+                    {{ r.roomType }}
+                  </span>
+                </td>
+                <td><strong>₹{{ r.pricePerNight }}</strong></td>
+                <td class="text-muted small">{{ r.description || '—' }}</td>
+                <td>
+                  <span class="badge" [class.bg-success]="r.available" [class.bg-secondary]="!r.available">
+                    {{ r.available ? 'Available' : 'Booked' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="d-flex gap-1">
+                    <button class="btn btn-sm btn-outline-primary" (click)="edit(r)"><i class="bi bi-pencil"></i></button>
+                    <button class="btn btn-sm btn-outline-danger" (click)="delete(r.id!)"><i class="bi bi-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="rooms.length===0">
+                <td colspan="7" class="text-center text-muted py-5">No rooms yet. Add one!</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

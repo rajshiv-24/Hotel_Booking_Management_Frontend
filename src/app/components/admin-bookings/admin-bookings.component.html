@@ -1,0 +1,69 @@
+<div class="container-fluid py-4 px-4">
+
+  <div class="mb-4">
+    <h2 class="page-title mb-1">📋 All Bookings</h2>
+    <p class="text-muted">View and manage all hotel reservations</p>
+  </div>
+
+  <div *ngIf="successMsg" class="alert alert-success">{{ successMsg }}</div>
+  <div *ngIf="errorMsg" class="alert alert-danger">
+    {{ errorMsg }} <button class="btn-close float-end" (click)="errorMsg=''"></button>
+  </div>
+
+  <div class="d-flex gap-2 mb-4 flex-wrap">
+    <button class="btn rounded-pill px-4"
+            [class.btn-dark]="filterStatus==='ALL'" [class.btn-outline-dark]="filterStatus!=='ALL'"
+            (click)="setFilter('ALL')">All ({{ bookings.length }})</button>
+    <button class="btn rounded-pill px-4"
+            [class.btn-success]="filterStatus==='CONFIRMED'" [class.btn-outline-success]="filterStatus!=='CONFIRMED'"
+            (click)="setFilter('CONFIRMED')">
+      ✅ Confirmed ({{ bookings | bookingFilter:'CONFIRMED' }})
+    </button>
+    <button class="btn rounded-pill px-4"
+            [class.btn-danger]="filterStatus==='CANCELLED'" [class.btn-outline-danger]="filterStatus!=='CANCELLED'"
+            (click)="setFilter('CANCELLED')">
+      ❌ Cancelled ({{ bookings | bookingFilter:'CANCELLED' }})
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary"></div>
+  </div>
+
+  <div *ngIf="!loading" class="hotel-card card">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 admin-table">
+        <thead><tr>
+          <th>#</th><th>Room</th><th>Customer</th><th>Email</th>
+          <th>Check-In</th><th>Check-Out</th><th>Nights</th><th>Amount</th><th>Status</th><th>Action</th>
+        </tr></thead>
+        <tbody>
+          <tr *ngFor="let b of filtered; let i=index">
+            <td class="text-muted">{{ i+1 }}</td>
+            <td><strong>{{ b.room?.roomNumber }}</strong><br><small class="text-muted">{{ b.room?.roomType }}</small></td>
+            <td><strong>{{ b.user?.fullName }}</strong></td>
+            <td class="text-muted small">{{ b.user?.email }}</td>
+            <td>{{ b.checkInDate }}</td>
+            <td>{{ b.checkOutDate }}</td>
+            <td class="text-center">{{ nights(b.checkInDate, b.checkOutDate) }}</td>
+            <td><strong>₹{{ b.totalAmount }}</strong></td>
+            <td><span class="badge" [class]="statusClass(b.status!)">{{ b.status }}</span></td>
+            <td>
+              <button *ngIf="b.status==='CONFIRMED'" (click)="cancel(b.id!)"
+                      class="btn btn-sm btn-outline-danger">
+                <i class="bi bi-x-circle me-1"></i>Cancel
+              </button>
+              <span *ngIf="b.status!=='CONFIRMED'" class="text-muted small">—</span>
+            </td>
+          </tr>
+          <tr *ngIf="filtered.length===0">
+            <td colspan="10" class="text-center text-muted py-5">
+              <div style="font-size:2rem;">📭</div>No bookings found.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

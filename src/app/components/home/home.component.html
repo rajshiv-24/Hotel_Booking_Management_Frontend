@@ -1,0 +1,80 @@
+<!-- Hero -->
+<div class="hero-bg">
+  <div class="container text-white text-center py-5">
+    <span class="badge bg-warning text-dark px-3 py-2 mb-3 rounded-pill" style="font-size:0.9rem;">
+      ⭐ 5-Star Luxury Experience
+    </span>
+    <h1 class="display-3 fw-bold mb-3">
+      Welcome to <span style="color:#ffc107;">LuxeStay</span>
+    </h1>
+    <p class="lead mb-1 opacity-75">
+      Hello, <strong>{{ auth.getFullName() }}</strong>! Your perfect stay awaits.
+    </p>
+    <p class="opacity-50 mb-5">Browse our premium rooms and book your dream stay in seconds.</p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap">
+      <a routerLink="/rooms" class="btn btn-gold btn-lg px-5 py-3 rounded-pill">
+        <i class="bi bi-door-open me-2"></i>Browse Rooms
+      </a>
+      <a routerLink="/my-bookings" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill">
+        <i class="bi bi-calendar-check me-2"></i>My Bookings
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Features -->
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold page-title">Why Choose LuxeStay?</h2>
+    <p class="text-muted">Experience the finest hospitality at your fingertips</p>
+  </div>
+  <div class="row g-4">
+    <div class="col-md-4" *ngFor="let f of features">
+      <div class="hotel-card card text-center p-4 h-100">
+        <div class="mb-3" style="font-size:2.5rem;">{{ f.icon }}</div>
+        <h5 class="fw-bold">{{ f.title }}</h5>
+        <p class="text-muted mb-0 small">{{ f.desc }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Room categories -->
+<div style="background:linear-gradient(135deg,#1a1a2e,#16213e);" class="py-5">
+  <div class="container text-center text-white">
+    <h2 class="fw-bold mb-1">Our Room Categories</h2>
+    <p class="opacity-75 mb-5">Something for every traveller</p>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="p-4 rounded-4 h-100" style="background:rgba(255,255,255,0.07);">
+          <div style="font-size:2.5rem;" class="mb-3">🛏️</div>
+          <h5 class="fw-bold text-warning">Single Room</h5>
+          <p class="opacity-75 small">Perfect for solo travellers. Cozy, comfortable, affordable.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-4 rounded-4 h-100" style="background:rgba(255,255,255,0.07);">
+          <div style="font-size:2.5rem;" class="mb-3">🛏️🛏️</div>
+          <h5 class="fw-bold text-info">Double Room</h5>
+          <p class="opacity-75 small">Ideal for couples or friends. Spacious with modern amenities.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-4 rounded-4 h-100" style="background:rgba(255,255,255,0.07);">
+          <div style="font-size:2.5rem;" class="mb-3">👑</div>
+          <h5 class="fw-bold text-danger">Suite</h5>
+          <p class="opacity-75 small">The ultimate luxury. Premium furnishings and panoramic views.</p>
+        </div>
+      </div>
+    </div>
+    <div class="mt-5">
+      <a routerLink="/rooms" class="btn btn-warning btn-lg px-5 py-3 rounded-pill fw-bold text-dark">
+        Book Now <i class="bi bi-arrow-right ms-2"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer class="py-4 text-center text-muted small" style="background:#e9ecef;">
+  <p class="mb-0">© 2026 LuxeStay Hotel. All rights reserved. 🏨</p>
+</footer>

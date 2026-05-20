@@ -1,0 +1,121 @@
+<div class="container py-5">
+
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <div>
+      <h2 class="page-title mb-1">🛏️ Browse Rooms</h2>
+      <p class="text-muted mb-0">Select a room and book your perfect stay</p>
+    </div>
+  </div>
+
+  <div *ngIf="successMsg" class="alert alert-success d-flex align-items-center gap-2">
+    <i class="bi bi-check-circle-fill"></i> {{ successMsg }}
+    <button class="btn-close ms-auto" (click)="successMsg=''"></button>
+  </div>
+  <div *ngIf="errorMsg" class="alert alert-danger d-flex align-items-center gap-2">
+    <i class="bi bi-exclamation-triangle-fill"></i> {{ errorMsg }}
+    <button class="btn-close ms-auto" (click)="errorMsg=''"></button>
+  </div>
+
+  <!-- Filters -->
+  <div class="d-flex gap-2 mb-4 flex-wrap">
+    <button class="btn rounded-pill px-4"
+            [class.btn-dark]="filterType==='ALL'" [class.btn-outline-dark]="filterType!=='ALL'"
+            (click)="setFilter('ALL')">All ({{ rooms.length }})</button>
+    <button class="btn rounded-pill px-4"
+            [class.btn-success]="filterType==='SINGLE'" [class.btn-outline-success]="filterType!=='SINGLE'"
+            (click)="setFilter('SINGLE')">🛏️ Single</button>
+    <button class="btn rounded-pill px-4"
+            [class.btn-info]="filterType==='DOUBLE'" [class.btn-outline-info]="filterType!=='DOUBLE'"
+            (click)="setFilter('DOUBLE')">🛏️🛏️ Double</button>
+    <button class="btn rounded-pill px-4"
+            [class.btn-danger]="filterType==='SUITE'" [class.btn-outline-danger]="filterType!=='SUITE'"
+            (click)="setFilter('SUITE')">👑 Suite</button>
+  </div>
+
+  <!-- Room Cards -->
+  <div class="row g-4">
+    <div class="col-md-4" *ngFor="let room of filtered">
+      <div class="hotel-card card h-100">
+        <div class="d-flex align-items-center justify-content-center text-white fw-bold"
+             style="height:150px;font-size:3rem;" [ngClass]="bannerClass(room.roomType)">
+          {{ roomIcon(room.roomType) }}
+        </div>
+        <div class="card-body p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="fw-bold mb-0">Room {{ room.roomNumber }}</h5>
+            <span class="badge" [class.bg-success]="room.available" [class.bg-danger]="!room.available">
+              {{ room.available ? 'Available' : 'Booked' }}
+            </span>
+          </div>
+          <span class="badge bg-light text-dark border mb-2">{{ room.roomType }}</span>
+          <p class="text-muted small mb-2">{{ room.description || 'Comfortable room with modern amenities.' }}</p>
+          <p class="fw-bold text-primary fs-5 mb-0">
+            ₹{{ room.pricePerNight }}<small class="text-muted fw-normal fs-6">/night</small>
+          </p>
+        </div>
+        <div class="card-footer bg-transparent border-0 px-3 pb-3">
+          <button class="btn w-100 fw-semibold"
+                  [class.btn-hotel]="room.available" [class.btn-secondary]="!room.available"
+                  [disabled]="!room.available" (click)="selectRoom(room)">
+            {{ room.available ? '📅 Book Now' : '❌ Not Available' }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="filtered.length===0" class="col-12 text-center py-5 text-muted">
+      <div style="font-size:3rem;">🔍</div>
+      <h5>No rooms found.</h5>
+      <button class="btn btn-outline-primary mt-2" (click)="setFilter('ALL')">Show All</button>
+    </div>
+  </div>
+
+  <!-- Booking Panel -->
+  <div id="bookingPanel" *ngIf="selectedRoom" class="mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="hotel-card card">
+          <div class="card-header text-white fw-bold py-3"
+               style="background:linear-gradient(135deg,#1a1a2e,#16213e);">
+            <i class="bi bi-calendar-plus me-2"></i>
+            Book Room {{ selectedRoom.roomNumber }} — {{ selectedRoom.roomType }}
+          </div>
+          <div class="card-body p-4">
+            <div class="alert alert-light border mb-3 small">
+              <div class="d-flex justify-content-between flex-wrap gap-2">
+                <span><strong>Room:</strong> {{ selectedRoom.roomNumber }}</span>
+                <span><strong>Type:</strong> {{ selectedRoom.roomType }}</span>
+                <span><strong>Rate:</strong> ₹{{ selectedRoom.pricePerNight }}/night</span>
+              </div>
+            </div>
+            <div *ngIf="errorMsg" class="alert alert-danger small">{{ errorMsg }}</div>
+            <form [formGroup]="bookingForm" (ngSubmit)="confirmBooking()">
+              <div class="row g-3 mb-4">
+                <div class="col-6">
+                  <label class="form-label fw-semibold small"><i class="bi bi-calendar-event me-1"></i>Check-In</label>
+                  <input type="date" class="form-control" formControlName="checkInDate" [min]="today"
+                         [class.is-invalid]="f['checkInDate'].touched && f['checkInDate'].invalid">
+                  <div class="invalid-feedback">Required.</div>
+                </div>
+                <div class="col-6">
+                  <label class="form-label fw-semibold small"><i class="bi bi-calendar-event me-1"></i>Check-Out</label>
+                  <input type="date" class="form-control" formControlName="checkOutDate" [min]="today"
+                         [class.is-invalid]="f['checkOutDate'].touched && f['checkOutDate'].invalid">
+                  <div class="invalid-feedback">Required.</div>
+                </div>
+              </div>
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success flex-fill py-2 fw-bold" [disabled]="loading">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                  {{ loading ? 'Booking...' : '✅ Confirm Booking' }}
+                </button>
+                <button type="button" class="btn btn-outline-secondary flex-fill py-2"
+                        (click)="selectedRoom=null">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

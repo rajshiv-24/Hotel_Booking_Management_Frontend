@@ -1,0 +1,86 @@
+<div class="auth-bg">
+  <div class="auth-card card">
+    <div class="auth-header">
+      <div style="font-size:3rem;">🏨</div>
+      <h2 class="fw-bold mt-2 mb-1">LuxeStay</h2>
+      <p class="mb-0 opacity-75">Create your account</p>
+    </div>
+    <div class="card-body p-4">
+
+      <div *ngIf="errorMsg" class="alert alert-danger d-flex align-items-center gap-2">
+        <i class="bi bi-exclamation-triangle-fill"></i> {{ errorMsg }}
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Full Name</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0"><i class="bi bi-person text-muted"></i></span>
+            <input type="text" class="form-control border-start-0"
+                   formControlName="fullName" placeholder="Ravi Kumar"
+                   [class.is-invalid]="f['fullName'].touched && f['fullName'].invalid">
+          </div>
+          <div class="text-danger small mt-1" *ngIf="f['fullName'].touched && f['fullName'].invalid">
+            Name required (min 2 characters).
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Email Address</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope text-muted"></i></span>
+            <input type="email" class="form-control border-start-0"
+                   formControlName="email" placeholder="you@example.com"
+                   [class.is-invalid]="f['email'].touched && f['email'].invalid">
+          </div>
+          <div class="text-danger small mt-1" *ngIf="f['email'].touched && f['email'].invalid">
+            Valid email is required.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Phone Number</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0"><i class="bi bi-telephone text-muted"></i></span>
+            <input type="text" class="form-control border-start-0"
+                   formControlName="phone" placeholder="10-digit number"
+                   [class.is-invalid]="f['phone'].touched && f['phone'].invalid">
+          </div>
+          <div class="text-danger small mt-1" *ngIf="f['phone'].touched && f['phone'].invalid">
+            Valid 10-digit phone required.
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Password</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock text-muted"></i></span>
+            <input [type]="showPass ? 'text' : 'password'"
+                   class="form-control border-start-0 border-end-0"
+                   formControlName="password" placeholder="Min 6 characters"
+                   [class.is-invalid]="f['password'].touched && f['password'].invalid">
+            <button class="btn btn-outline-secondary border-start-0" type="button"
+                    (click)="showPass=!showPass">
+              <i class="bi" [class.bi-eye]="!showPass" [class.bi-eye-slash]="showPass"></i>
+            </button>
+          </div>
+          <div class="text-danger small mt-1" *ngIf="f['password'].touched && f['password'].invalid">
+            Password must be at least 6 characters.
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-hotel w-100 py-2 mb-3" [disabled]="loading">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          {{ loading ? 'Creating account...' : 'Create Account' }}
+        </button>
+      </form>
+
+      <p class="text-center text-muted small mb-0">
+        Already have an account?
+        <a routerLink="/login" class="fw-bold text-decoration-none">Sign in</a>
+      </p>
+
+    </div>
+  </div>
+</div>
